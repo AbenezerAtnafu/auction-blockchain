@@ -5,6 +5,7 @@ import Shops from './pages/Shops.jsx';
 import { Switch, Route } from 'react-router-dom';
 import { Layout } from 'antd';
 import './css/app.css';
+import Home from './pages/home/Home.jsx';
 
 const { Content } = Layout;
 
@@ -17,7 +18,7 @@ const App = () => {
           <Switch>
             <div className="site-layout-content">
               <Route exact path="/">
-                Welcome to Eshi Bidding
+                <Home />
               </Route>
               <Route path="/shops">
                 <Shops />
