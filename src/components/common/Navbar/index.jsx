@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import { Web3Context } from '../../Web3Context';
 
 const { Header } = Layout;
+const { Text } = Typography;
 
 const Navbar = () => {
   const web3 = useContext(Web3Context);
@@ -25,11 +26,11 @@ const Navbar = () => {
           alignItems: 'left',
         }}
       >
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+        <Space theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
           <Link to="/">
-          <Menu.Item key="1">Eshi Bidding</Menu.Item>
+            <Text style={{ color: 'white' }}>Eshi Bidding</Text>
           </Link>
-        </Menu>
+        </Space>
 
         <Space size={'large'}>
           <Link to="/shops">Shops</Link>

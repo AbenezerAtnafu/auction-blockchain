@@ -77,6 +77,10 @@ const Shops = () => {
     setLoading(false);
   };
 
+  const handleCardClicked = (shop) => {
+    setSelectedShop(shop);
+  };
+
   useEffect(() => {
     loadShops();
   }, []);
@@ -129,16 +133,25 @@ const Shops = () => {
       <Divider></Divider>
       <Row>
         <Col flex={16}>
-          <Row>
-            <Space size={50}>
-              {shopList.map((s) => {
-                return (
-                  <Col>
-                    <ShopCard shop={s} key={s.storeAddress} />
-                  </Col>
-                );
-              })}
-            </Space>
+          <Row
+            style={{
+              maxWidth: '864px',
+              height: '100vh',
+              marginRight: '4px',
+              overflowY: 'scroll',
+            }}
+          >
+            {shopList.map((s) => {
+              return (
+                <Col span={8} style={{ marginTop: '10px' }}>
+                  <ShopCard
+                    onCardClicked={handleCardClicked}
+                    shop={s}
+                    key={s.storeAddress}
+                  />
+                </Col>
+              );
+            })}
           </Row>
         </Col>
         <Col span={8}>
