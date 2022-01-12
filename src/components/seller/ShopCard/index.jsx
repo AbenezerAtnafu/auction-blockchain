@@ -1,4 +1,4 @@
-import { Card, Button } from "antd";
+import { Card, Button, Row, Col } from 'antd';
 
 const { Meta } = Card;
 
@@ -6,7 +6,7 @@ const ShopCard = ({ shop }) => {
   return (
     <Card
       hoverable
-      style={{ width: 220 }}
+      style={{ width: 260 }}
       cover={
         <img
           alt="example"
@@ -14,13 +14,19 @@ const ShopCard = ({ shop }) => {
         />
       }
       actions={[
-        <Button type="primary" shape="round" size='large'>
-            See Products
-        </Button>
+        <Button type="primary" shape="round" size="large">
+          See Products
+        </Button>,
       ]}
     >
-      <Meta title="Name" description={`${shop.storeName}`} />
-      <div>product count</div>
+      <Row>
+        <Col span={12} style={{ textAlign: 'center' }}>
+          <Meta title="Shop Name" description={`${shop.storeName}`} />
+        </Col>
+        <Col span={12} style={{ textAlign: 'center' }}>
+          <Meta title="Product Count" description={`${0}`} />
+        </Col>
+      </Row>
     </Card>
   );
 };

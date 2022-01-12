@@ -10,7 +10,7 @@
   "sourceMap": "125:1315:2:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;",
   "deployedSourceMap": "125:1315:2:-:0;;;;;;;;",
   "source": "pragma solidity >=0.4.22 <0.9.0;\n\n/**\n * @title SafeMath\n * @dev Math operations with safety checks that revert on error\n */\nlibrary SafeMath {\n\n  /**\n  * @dev Multiplies two numbers, reverts on overflow.\n  */\n  function mul(uint256 _a, uint256 _b) internal pure returns (uint256) {\n    // Gas optimization: this is cheaper than requiring 'a' not being zero, but the\n    // benefit is lost if 'b' is also tested.\n    // See: https://github.com/OpenZeppelin/openzeppelin-solidity/pull/522\n    if (_a == 0) {\n      return 0;\n    }\n\n    uint256 c = _a * _b;\n    require(c / _a == _b);\n\n    return c;\n  }\n\n  /**\n  * @dev Integer division of two numbers truncating the quotient, reverts on division by zero.\n  */\n  function div(uint256 _a, uint256 _b) internal pure returns (uint256) {\n    require(_b > 0); // Solidity only automatically asserts when dividing by 0\n    uint256 c = _a / _b;\n    // assert(_a == _b * c + _a % _b); // There is no case in which this doesn't hold\n\n    return c;\n  }\n\n  /**\n  * @dev Subtracts two numbers, reverts on overflow (i.e. if subtrahend is greater than minuend).\n  */\n  function sub(uint256 _a, uint256 _b) internal pure returns (uint256) {\n    require(_b <= _a);\n    uint256 c = _a - _b;\n\n    return c;\n  }\n\n  /**\n  * @dev Adds two numbers, reverts on overflow.\n  */\n  function add(uint256 _a, uint256 _b) internal pure returns (uint256) {\n    uint256 c = _a + _b;\n    require(c >= _a);\n\n    return c;\n  }\n}\n",
-  "sourcePath": "/home/rediet/Documents/custom-auction/auction-blockchain-main/Truffle/contracts/SafeMath.sol",
+  "sourcePath": "/home/semere/Documents/AuctionChain/auction-blockchain/Truffle/contracts/SafeMath.sol",
   "ast": {
     "absolutePath": "project:/contracts/SafeMath.sol",
     "exportedSymbols": {
@@ -2793,12 +2793,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x5a8211461DdC885fA1C6f1891E93e9A8e7f142A2",
-      "transactionHash": "0xf122262980e6d71033c1b8d9ecfcb30242f68ba0a8187781963d5fdca9e01b6b"
+      "address": "0x2D75fb0916b7de28D03F8Fcd2011A91189FD7d5f",
+      "transactionHash": "0xa5850524a6dd69b6a7fd32b3f1c491fc01ff4911bfe928f77265ae92f123dcae"
     }
   },
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-01-11T13:58:56.848Z",
+  "updatedAt": "2022-01-12T07:41:25.719Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "Math operations with safety checks that revert on error",

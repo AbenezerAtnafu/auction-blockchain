@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import ShopCard from "../components/seller/ShopCard/index.jsx";
-import CreateShop from "../components/seller/CreateShop/index.jsx";
+import { useState, useEffect } from 'react';
+import ShopCard from '../components/seller/ShopCard/index.jsx';
+import CreateShop from '../components/seller/CreateShop/index.jsx';
 import {
   Typography,
   Divider,
@@ -10,11 +10,11 @@ import {
   Spin,
   Space,
   message,
-} from "antd";
-import { useContext } from "react";
-import { Web3Context } from "../components/Web3Context";
-import StoreProductList from "../components/product/StoreProductList.jsx";
-import CreateProduct from "../components/product/CreateProduct.jsx";
+} from 'antd';
+import { useContext } from 'react';
+import { Web3Context } from '../components/Web3Context';
+import StoreProductList from '../components/product/StoreProductList.jsx';
+import CreateProduct from '../components/product/CreateProduct.jsx';
 
 const { Title } = Typography;
 
@@ -31,13 +31,13 @@ const Shops = () => {
     const web3Instance = await web3();
     const account = await web3Instance.accounts;
     await web3Instance.auction.methods
-      .addStore(values["_name"], values["_email"], values["_storeFrontImage"])
+      .addStore(values['_name'], values['_email'], values['_storeFrontImage'])
       .send({ from: account[0] })
-      .once("receipt", (receipt) => {
+      .once('receipt', (receipt) => {
         setLoading(false);
         setCreateShopModal(false);
       });
-    message.success("Shop Created Successfully!");
+    message.success('Shop Created Successfully!');
   };
 
   const handleProductSubmit = async (
@@ -55,11 +55,11 @@ const Shops = () => {
     await web3Instance.auction.methods
       .addProduct(name, category, startTime, endTime, price, productCondition)
       .send({ from: account[0] })
-      .once("receipt", (receipt) => {
+      .once('receipt', (receipt) => {
         setLoading(false);
         setCreateProductModal(false);
       });
-    message.success("Product Added Successfully!");
+    message.success('Product Added Successfully!');
   };
 
   const loadShops = async () => {
@@ -85,11 +85,11 @@ const Shops = () => {
     return (
       <div
         style={{
-          width: "100%",
-          height: "200px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          width: '100%',
+          height: '200px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <Spin tip="Loading ..." />
@@ -100,11 +100,11 @@ const Shops = () => {
     <>
       <Row>
         <Col flex={5}>
-          <div style={{ textAlign: "center" }}>
+          <div style={{ textAlign: 'center' }}>
             <Title>Shop List</Title>
           </div>
         </Col>
-        <Col span={2}>
+        <Col span={3}>
           {!selectedShop ? (
             <Button
               type="primary"
