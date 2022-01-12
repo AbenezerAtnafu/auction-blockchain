@@ -15,6 +15,7 @@ contract Auction {
     mapping (uint => address) public storesByProductId;          // seller address by product id
     mapping (address => uint) public storesBySellers;            // store by seller address, used to prevent more than one store per user
     mapping (address => uint) public productCountByStore;        // product count by store
+    mapping (uint => mapping(uint => Bid)) public bidsByProduct;
 
     // events
     event NewProductAdded(address storeAddress, address productAddress);
@@ -22,6 +23,16 @@ contract Auction {
 
     modifier OnlyOwner(){
         require(msg.sender == owner,"ONLY ADMIN IS ALLOWED");
+        _;
+    }
+
+    modifier onlyBefore(uint _time) {
+        require(block.timestamp < _time);
+        _;
+    }
+
+    modifier onlyAfter(uint _time) {
+        require(block.timestamp > _time);
         _;
     }
     
@@ -44,6 +55,7 @@ contract Auction {
 
     uint public storesCount;
     uint public productCount;
+    uint public bidCount;
 
     // structs
 
@@ -73,6 +85,25 @@ contract Auction {
         ProductCondition productCondition;//
         ProductState productState;//
         bool exists;
+    }
+
+    // auction
+    struct Bid {
+        uint id;
+        uint productId;
+        uint bidAmount;
+    }
+
+    // create bid
+    function addBid (uint productId, uint bidAmount) public returns (bool success){
+        bidCount = bidCount.add(1);
+        bidsByProduct[productId][bidCount] = Bid(bidCount, productId, bidAmount);
+        return true;
+    }
+
+    // get product bids
+    function getProductBids (uint productId) public {
+
     }
 
     // create store
