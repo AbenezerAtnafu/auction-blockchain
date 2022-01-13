@@ -62,7 +62,7 @@ const StoreProductList = ({ web3, shop }) => {
         ghost={false}
         onBack={() => window.history.back()}
         title="Product List"
-        subTitle={`${shop ? shop.storeName : ""}`}
+        subTitle={`${shop ? shop.storeName + "'s shop" : ''}`}
       >
         <Descriptions size="small" column={1}>
           <Descriptions.Item label="Store Name">

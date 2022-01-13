@@ -1,6 +1,6 @@
-import { Card, Button, Row, Col } from 'antd';
+import { Card, Button, Row, Col, Typography } from 'antd';
 
-const { Meta } = Card;
+const { Text } = Typography;
 
 const ShopCard = ({ shop, onCardClicked }) => {
   return (
@@ -26,10 +26,18 @@ const ShopCard = ({ shop, onCardClicked }) => {
     >
       <Row>
         <Col span={12} style={{ textAlign: 'center' }}>
-          <Meta title="Shop Name" description={`${shop.storeName}`} />
+          <Text>Shop Name</Text>
         </Col>
         <Col span={12} style={{ textAlign: 'center' }}>
-          <Meta title="Product Count" description={`${0}`} />
+          <Text>{shop.storeName}</Text>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={12} style={{ textAlign: 'center' }}>
+          <Text>Product Count</Text>
+        </Col>
+        <Col span={12} style={{ textAlign: 'center' }}>
+          <Text>{shop.productCount}</Text>
         </Col>
       </Row>
     </Card>

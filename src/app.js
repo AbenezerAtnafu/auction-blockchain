@@ -6,6 +6,8 @@ import { Switch, Route } from 'react-router-dom';
 import { Layout } from 'antd';
 import './css/app.css';
 import Home from './pages/home/Home.jsx';
+import Products from './pages/Products.jsx';
+import Bids from './pages/Bids.jsx';
 
 const { Content } = Layout;
 
@@ -22,6 +24,12 @@ const App = () => {
               </Route>
               <Route path="/shops">
                 <Shops />
+              </Route>
+              <Route path="/products">
+                <Products />
+              </Route>
+              <Route path="/bids">
+                <Bids />
               </Route>
             </div>
           </Switch>
