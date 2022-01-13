@@ -1,5 +1,4 @@
-import { Card, Button, Row, Col, Typography } from "antd";
-const { Meta } = Card;
+import { Card, Button, Row, Col, Typography } from 'antd';
 
 const { Text } = Typography;
 const { Meta } = Card;

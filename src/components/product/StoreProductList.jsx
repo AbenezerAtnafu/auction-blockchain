@@ -74,7 +74,7 @@ const StoreProductList = ({ web3, shop, shopUserAddress }) => {
             {shop ? shop.storeId : ''}
           </Descriptions.Item>
           <Descriptions.Item label="Owner">
-            {shop ? shop.owner.firstName + shop.owner.lastName : ''}
+            {shop ? shop.owner.firstName +' '+ shop.owner.lastName : ''}
           </Descriptions.Item>
           <Descriptions.Item label="Phone Number">
             {shop ? shop.owner.phoneNumber : ''}

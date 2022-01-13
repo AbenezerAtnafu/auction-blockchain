@@ -1,5 +1,6 @@
 import { Card, Row, Col, Button, Typography } from 'antd';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const { Text } = Typography;
 
@@ -21,9 +22,11 @@ const ProductCard = ({ product, onCardClicked }) => {
           />
         }
         actions={[
-          <Button type="primary" shape="round" size="large">
-            See Product
-          </Button>,
+          <Link to={'/product-detail'}>
+            <Button type="primary" shape="round" size="large">
+              Product Detail
+            </Button>
+          </Link>,
         ]}
       >
         <Row>
@@ -31,7 +34,7 @@ const ProductCard = ({ product, onCardClicked }) => {
             <Text>Product Name</Text>
           </Col>
           <Col span={12} style={{ textAlign: 'center' }}>
-            <Text>{product.name}</Text>
+            <Text>{product.productName}</Text>
           </Col>
         </Row>
         <Row>
@@ -44,7 +47,7 @@ const ProductCard = ({ product, onCardClicked }) => {
         </Row>
         <Row>
           <Col span={12}>
-            <Text>Product initial price</Text>
+            <Text>Product price</Text>
           </Col>
           <Col span={12} style={{ textAlign: 'center' }}>
             <Text>{product.price}</Text>

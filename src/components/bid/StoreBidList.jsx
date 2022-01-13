@@ -6,6 +6,7 @@ import {
   message,
   Avatar,
   Typography,
+  Tag,
 } from 'antd';
 
 import VirtualList from 'rc-virtual-list';
@@ -54,15 +55,16 @@ const StoreBidList = ({ web3, product }) => {
           width: '90%',
         }}
       >
+        {console.log(product)}
         <PageHeader
           ghost={false}
           onBack={() => window.history.back()}
           title="Bid List"
-          subTitle={`${product ? product.name : ''}`}
+          subTitle={`${product ? product.productName : ''}`}
         >
           <Descriptions size="small" column={1}>
             <Descriptions.Item label="Product Name">
-              {product ? product.name : ''}
+              {product ? product.productName : ''}
             </Descriptions.Item>
             <Descriptions.Item label="Product Category">
               {product ? product.category : ''}
@@ -71,7 +73,15 @@ const StoreBidList = ({ web3, product }) => {
               {product ? product.price : ''}
             </Descriptions.Item>
             <Descriptions.Item label="Product Condition">
-              {product ? product.condition : ''}
+              {product ? (
+                product.productCondition === '0' ? (
+                  <Tag color={'warning'}>{'Used'}</Tag>
+                ) : (
+                  <Tag color={'success'}>{'New'}</Tag>
+                )
+              ) : (
+                ''
+              )}
             </Descriptions.Item>
           </Descriptions>
         </PageHeader>
