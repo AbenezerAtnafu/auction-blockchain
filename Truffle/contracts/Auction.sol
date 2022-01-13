@@ -72,7 +72,7 @@ contract Auction {
     // store
     struct Store{
         uint storeId;
-        address userAddress;
+        address usersByAddress;
         string storeName;   
         string storeFrontImage;
         uint balance;
@@ -114,6 +114,18 @@ contract Auction {
             lastName,
             email, 
             phoneNumber
+        );
+    }
+
+    // check user
+    function getUser (address userAddress) public view returns (address _userAddress, string memory _firstName, string memory _lastName, string memory _email, string memory _phoneNumber){
+        User memory user = usersByAddress[userAddress];
+        return (
+            user.userAddress,
+            user.firstName,
+            user.lastName,
+            user.email, 
+            user.phoneNumber
         );
     }
 

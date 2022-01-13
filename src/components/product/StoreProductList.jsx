@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   List,
   message,
@@ -7,28 +7,35 @@ import {
   PageHeader,
   Button,
   Descriptions,
-} from 'antd';
-import VirtualList from 'rc-virtual-list';
+} from "antd";
+import VirtualList from "rc-virtual-list";
 
 const { Title } = Typography;
 
 const fakeDataUrl =
-  'https://randomuser.me/api/?results=20&inc=name,gender,email,nat,picture&noinfo';
+  "https://randomuser.me/api/?results=20&inc=name,gender,email,nat,picture&noinfo";
 const ContainerHeight = 400;
 
 const StoreProductList = ({ web3, shop }) => {
   const [data, setData] = useState([]);
 
-  const appendData = () => {
-    console.log(shop.storeAddress, 'shop1');
-    web3().then((web3Instance) => {
-      web3Instance.auction.methods
-        .storesBySellers(shop.storeAddress)
-        .call()
-        .then((shop) => {
-          console.log(shop, 'shooooooooppppppppp');
-        });
-    });
+  const appendData = async () => {
+    console.log(shop.storeAddress, "shop1");
+    const web3Instance = await web3();
+    const account = await web3Instance.accounts;
+    const storeProductCount = await web3Instance.auction.methods.productCountByStore(account[0]).call();
+    console.log(storeProductCount, "store Product card");
+    for (let store = 0; store <= storeProductCount; store++) {
+      const product = await web3Instance.auction.methods
+      .stores(account[0], store)
+      .call();
+      
+      console.log(product)
+    }
+    
+
+    // console.log(products, "products");
+
     fetch(fakeDataUrl)
       .then((res) => res.json())
       .then((body) => {
@@ -50,25 +57,28 @@ const StoreProductList = ({ web3, shop }) => {
   };
 
   return (
-    <div style={{ width: '90%' }}>
+    <div style={{ width: "90%" }}>
       <PageHeader
         ghost={false}
         onBack={() => window.history.back()}
         title="Product List"
-        subTitle={`${shop ? shop.storeName : ''}`}
+        subTitle={`${shop ? shop.storeName : ""}`}
       >
         <Descriptions size="small" column={1}>
           <Descriptions.Item label="Store Name">
-            {shop ? shop.storeName : ''}
+            {shop ? shop.storeName : ""}
           </Descriptions.Item>
-          <Descriptions.Item label="Store Address">
-            {shop ? shop.storeAddress : ''}
+          <Descriptions.Item label="Store ID">
+            {shop ? shop.storeId : ""}
           </Descriptions.Item>
-          <Descriptions.Item label="Email">
-            {shop ? shop.email : ''}
+          <Descriptions.Item label="Owner">
+            {shop ? shop.owner.firstName + shop.owner.lastName : ""}
+          </Descriptions.Item>
+          <Descriptions.Item label="Phone Number">
+            {shop ? shop.owner.phoneNumber : ""}
           </Descriptions.Item>
           <Descriptions.Item label="Product Count">
-            {shop ? shop.productCount : ''}
+            {shop ? shop.productCount : ""}
           </Descriptions.Item>
         </Descriptions>
       </PageHeader>

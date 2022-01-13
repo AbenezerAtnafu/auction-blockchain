@@ -27,6 +27,7 @@ const Web3ContextProvider = ({ children }) => {
   useEffect(async () => {
     await loadBlockChain();
   }, []);
+  
   return (
     <Web3Context.Provider value={loadBlockChain}>
       {children}
