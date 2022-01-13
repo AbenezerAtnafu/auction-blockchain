@@ -6,7 +6,8 @@ import {
   message,
   Avatar,
   Typography,
-} from "antd";
+  Tag,
+} from 'antd';
 
 import VirtualList from "rc-virtual-list";
 import CustomCountdown from "../countdown/index.jsx";
@@ -57,10 +58,11 @@ const StoreBidList = ({ web3, product }) => {
           width: "90%",
         }}
       >
+        {console.log(product)}
         <PageHeader
           ghost={false}
           title="Bid List"
-          subTitle={`${product ? product.productName : ""}`}
+          subTitle={`${product ? product.productName : ''}`}
         >
           <div
             style={{
@@ -78,7 +80,7 @@ const StoreBidList = ({ web3, product }) => {
           </div>
           <Descriptions size="large" column={1}>
             <Descriptions.Item label="Product Name">
-              {product ? product.productName : ""}
+              {product ? product.productName : ''}
             </Descriptions.Item>
             <Descriptions.Item label="Product Category">
               {product ? product.category : ""}
@@ -87,7 +89,15 @@ const StoreBidList = ({ web3, product }) => {
               {product ? product.price : ""}
             </Descriptions.Item>
             <Descriptions.Item label="Product Condition">
-              {product ? product.productCondition : ""}
+              {product ? (
+                product.productCondition === '0' ? (
+                  <Tag color={'warning'}>{'Used'}</Tag>
+                ) : (
+                  <Tag color={'success'}>{'New'}</Tag>
+                )
+              ) : (
+                ''
+              )}
             </Descriptions.Item>
           </Descriptions>
         </PageHeader>

@@ -1,6 +1,7 @@
 import { Card, Row, Col, Button, Typography } from "antd";
 import React from "react";
 import CustomCountdown from "../../countdown/index.jsx";
+import { Link } from 'react-router-dom';
 
 const { Text } = Typography;
 
@@ -22,16 +23,18 @@ const ProductCard = ({ product, onCardClicked }) => {
           />
         }
         actions={[
-          <Button type="primary" shape="round" size="large">
-            See Product
-          </Button>,
+          <Link to={'/product-detail'}>
+            <Button type="primary" shape="round" size="large">
+              Product Detail
+            </Button>
+          </Link>,
         ]}
       >
         <Row>
           <Col span={12}>
             <Text>Name</Text>
           </Col>
-          <Col span={12} style={{ textAlign: "center" }}>
+          <Col span={12} style={{ textAlign: 'center' }}>
             <Text>{product.productName}</Text>
           </Col>
         </Row>

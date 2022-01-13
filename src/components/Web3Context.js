@@ -1,5 +1,5 @@
-import React, { createContext, useEffect, useState } from "react";
-import Web3Instance from "../Web3/Web3Instance";
+import React, { createContext, useEffect, useState } from 'react';
+import Web3Instance from '../Web3/Web3Instance';
 
 const Web3Context = createContext();
 

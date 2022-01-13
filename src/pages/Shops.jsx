@@ -137,7 +137,7 @@ const Shops = () => {
               shape="round"
               size="large"
               onClick={() => {
-                const hasAccount = window.document.cookie.split(";")[6].split("=")[1];
+                const hasAccount = window.document.cookie.split(";")[2].split("=")[1];
                 if (hasAccount==="false") {
                   message.error("Please create your account!");
                   setRedirect("/register");

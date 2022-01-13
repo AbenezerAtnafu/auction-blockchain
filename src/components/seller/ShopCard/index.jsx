@@ -1,7 +1,7 @@
-import { Card, Button, Row, Col, Typography } from "antd";
-const { Meta } = Card;
+import { Card, Button, Row, Col, Typography } from 'antd';
 
 const { Text } = Typography;
+const { Meta } = Card;
 
 const ShopCard = ({ shop, onCardClicked }) => {
   return (
@@ -11,9 +11,9 @@ const ShopCard = ({ shop, onCardClicked }) => {
       style={{ width: 260 }}
       cover={
         <img
-          height={"180px"}
+          height={'180px'}
           style={{
-            objectFit: "fill",
+            objectFit: 'fill',
           }}
           alt="example"
           src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"

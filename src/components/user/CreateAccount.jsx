@@ -26,7 +26,7 @@ const CreateAccount = ({ userPk, onClose }) => {
   };
 
   useEffect(() => {
-    const hasAccount = window.document.cookie.split(";")[6].split("=")[1];
+    const hasAccount = window.document.cookie.split(";")[2].split("=")[1];
     if (hasAccount === "true") {
       setRedirect("/");
     }
@@ -50,7 +50,7 @@ const CreateAccount = ({ userPk, onClose }) => {
         }}
       >
         <Typography.Title>
-          Your current address is: {window.document.cookie.split(";")[5]}
+          Your current address is: {window.document.cookie.split(";")[2]}
         </Typography.Title>
         <Form.Item
           name="firstName"
