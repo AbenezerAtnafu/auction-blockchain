@@ -56,9 +56,9 @@ contract Auction {
     
     // global states
 
-    uint public storesCount;
-    uint public productCount;
-    uint public bidCount;
+    uint public storesCount = 0;
+    uint public productCount = 0;
+    uint public bidCount = 0;
 
     // structs
 
@@ -163,7 +163,7 @@ contract Auction {
         returns (bool)
     { 
         // require(true);
-        storesCount = storesCount.add(1);
+        storesCount += 1;
         storesById[storesCount] = Store(storesCount, msg.sender, _name, _storeFrontImage, 0, 0);
         storesByAddress[msg.sender] = Store(storesCount, msg.sender, _name, _storeFrontImage, 0, 0);
         storesBySellers[msg.sender] = storesCount;

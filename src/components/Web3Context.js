@@ -16,6 +16,7 @@ const Web3ContextProvider = ({ children }) => {
       try {
         const auction = await Web3Instance.auction;
         const accounts = await Web3Instance.accounts;
+        window.document.cookie = `${accounts[0]}`
         resolve({auction, accounts});
       } catch (error) {
         console.log(error);

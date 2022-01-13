@@ -6,6 +6,8 @@ import { Switch, Route } from 'react-router-dom';
 import { Layout } from 'antd';
 import './css/app.css';
 import Home from './pages/home/Home.jsx';
+import CreateAccount from './components/user/CreateAccount.jsx';
+import GuardedRoute from './components/guarded-route/index.jsx';
 
 const { Content } = Layout;
 
@@ -22,6 +24,9 @@ const App = () => {
               </Route>
               <Route path="/shops">
                 <Shops />
+              </Route>
+              <Route path="/register">
+                <CreateAccount />
               </Route>
             </div>
           </Switch>

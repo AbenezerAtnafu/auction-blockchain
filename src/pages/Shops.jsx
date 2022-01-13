@@ -21,10 +21,11 @@ const { Title } = Typography;
 const Shops = () => {
   const web3 = useContext(Web3Context);
   const [isModalOpen, setCreateShopModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [shopList, setShopList] = useState([]);
   const [selectedShop, setSelectedShop] = useState();
   const [createProductModal, setCreateProductModal] = useState();
+  const [currentAccount, setCurrentAccount] = useState(false);
 
   const handleShopSubmit = async (values) => {
     setLoading(true);
@@ -71,27 +72,35 @@ const Shops = () => {
     const account = await web3Instance.accounts;
     for (let i = 1; i <= storesCount; i++) {
       const shop = await web3Instance.auction.methods.storesById(i).call();
-      shop.owner = await web3Instance.auction.methods.usersByAddress(shop.userAddress).call();
+      shop.owner = await web3Instance.auction.methods
+        .usersByAddress(shop.userAddress)
+        .call();
       setShopList((shopList) => [...shopList, shop]);
-      if (shop.storeAddress === account[0]) {
+      console.log(shop);
+      if (shop.userAddress === account[0]) {
         setSelectedShop(shop);
-      }
-      else{
+        setCurrentAccount(true);
+      } else {
         setSelectedShop(shop);
       }
     }
     setLoading(false);
   };
 
-  const handleCardClicked = (shop) => {
+  const handleCardClicked = async (shop) => {
     setSelectedShop(shop);
+    // setCurrentAccount(shop.userAddress === account[0])
   };
 
   useEffect(() => {
     loadShops();
   }, []);
 
-  if (loading) {
+  useEffect(() => {
+    setSelectedShop(shopList[0]);
+  }, [selectedShop]);
+
+  if (loading && !selectedShop) {
     return (
       <div
         style={{
@@ -115,7 +124,7 @@ const Shops = () => {
           </div>
         </Col>
         <Col span={3}>
-          {!selectedShop ? (
+          {!currentAccount ? (
             <Button
               type="primary"
               shape="round"
@@ -154,7 +163,7 @@ const Shops = () => {
                     <ShopCard
                       onCardClicked={handleCardClicked}
                       shop={s}
-                      key={s.storeAddress}
+                      key={s.userAddress}
                     />
                   </Col>
                 );

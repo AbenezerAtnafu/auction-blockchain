@@ -18,28 +18,24 @@ const ContainerHeight = 400;
 
 const StoreProductList = ({ web3, shop }) => {
   const [data, setData] = useState([]);
+  const [myShops, setMyShops] = useState(false);
 
   const appendData = async () => {
-    console.log(shop.storeAddress, "shop1");
     const web3Instance = await web3();
     const account = await web3Instance.accounts;
-    const storeProductCount = await web3Instance.auction.methods.productCountByStore(account[0]).call();
+    if (shop.userAddress === account[0]) {
+      setMyShops(true);
+    }
+    const storeProductCount = await web3Instance.auction.methods
+      .productCountByStore(account[0])
+      .call();
     console.log(storeProductCount, "store Product card");
     for (let store = 0; store <= storeProductCount; store++) {
       const product = await web3Instance.auction.methods
-      .stores(account[0], store)
-      .call();
+        .stores(account[0], store)
+        .call();
       setData([...data, product]);
-      console.log(product);
     }
-    
-
-    // fetch(fakeDataUrl)
-    //   .then((res) => res.json())
-    //   .then((body) => {
-    //     setData(data.concat(body.results));
-    //     message.success(`${body.results.length} more items loaded!`);
-    //   });
   };
 
   useEffect(() => {
@@ -59,8 +55,8 @@ const StoreProductList = ({ web3, shop }) => {
       <PageHeader
         ghost={false}
         onBack={() => window.history.back()}
-        title="Product List"
-        subTitle={`${shop ? shop.storeName : ""}`}
+        subTitle="Product List"
+        title={myShops ? `Your Shop` : `${shop ? shop.storeName : ""}`}
       >
         <Descriptions size="small" column={1}>
           <Descriptions.Item label="Store Name">

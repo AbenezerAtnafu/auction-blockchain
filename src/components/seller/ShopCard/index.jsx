@@ -1,4 +1,5 @@
-import { Card, Button, Row, Col } from 'antd';
+import { Card, Button, Row, Col } from "antd";
+import Title from "antd/lib/skeleton/Title";
 
 const { Meta } = Card;
 
@@ -10,9 +11,9 @@ const ShopCard = ({ shop, onCardClicked }) => {
       style={{ width: 260 }}
       cover={
         <img
-          height={'180px'}
+          height={"180px"}
           style={{
-            objectFit: 'fill',
+            objectFit: "fill",
           }}
           alt="example"
           src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
@@ -23,15 +24,17 @@ const ShopCard = ({ shop, onCardClicked }) => {
           See Products
         </Button>,
       ]}
+      
     >
-      <Row>
-        <Col span={12} style={{ textAlign: 'center' }}>
-          <Meta title="Shop Name" description={`${shop.storeName}`} />
+      <Meta title={shop.storeName} description={`${shop.productCount} products`}></Meta>
+      {/* <Row>
+        <Col span={24} style={{ textAlign: "center" }}>
+          <Title>{shop.storeName}</Title>
         </Col>
-        <Col span={12} style={{ textAlign: 'center' }}>
-          <Meta title="Product Count" description={`${0}`} />
+        <Col span={24} style={{ textAlign: "left" }}>
+          <Meta description={`${shop.productCount} products`} />
         </Col>
-      </Row>
+      </Row> */}
     </Card>
   );
 };

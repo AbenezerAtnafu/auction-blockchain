@@ -3,6 +3,7 @@ import { Web3Context } from "../../components/Web3Context.js";
 import CreateAccount from "../../components/user/CreateAccount.jsx";
 
 import { Layout, Typography, Spin, Button, message } from "antd";
+import { Link } from "react-router-dom";
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -15,7 +16,6 @@ const Home = () => {
 
   const handleSubmit = async (values) => {
     const web3Context = await web3();
-    console.log(Object.values(values));
     const account = await web3Context.accounts;
     const res = await web3Context.auction.methods
       .addUser(account[0], ...Object.values(values))
@@ -32,7 +32,6 @@ const Home = () => {
     const res = await web3Context.auction.methods
       .getUser(web3Context.accounts[0])
       .call();
-    console.log(web3Context.accounts[0]);
     setUser(res);
     setLoading(false);
   }, []);
@@ -76,25 +75,18 @@ const Home = () => {
           <div>
             {user._userAddress.toString() ==
             "0x0000000000000000000000000000000000000000" ? (
-              <Button
-                onClick={() => {
-                  setModal(true);
-                }}
+              <Link
+                to={"/register"}
               >
                 Please Create Account.
-              </Button>
+              </Link>
             ) : (
               <Button>Products</Button>
             )}
           </div>
         </div>
       </Content>
-      <CreateAccount
-        isOpen={modal}
-        onClose={() => setModal(false)}
-        handleSubmit={handleSubmit}
-        loading={loading}
-      />
+    
     </>
   );
 };
