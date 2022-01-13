@@ -1,7 +1,6 @@
-import { Card, Button, Row, Col } from "antd";
-import Title from "antd/lib/skeleton/Title";
+import { Card, Button, Row, Col, Typography } from 'antd';
 
-const { Meta } = Card;
+const { Text } = Typography;
 
 const ShopCard = ({ shop, onCardClicked }) => {
   return (

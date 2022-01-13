@@ -17,7 +17,7 @@ const CreateAccount = ({ userPk, onClose, handleSubmit, loading }) => {
           flexDirection: "column",
         }}
       >
-        <Typography.Title>Your current address is: {window.document.cookie.split(";")[4]}</Typography.Title>
+        <Typography.Title>Your current address is: {window.document.cookie.split(";")[5]}</Typography.Title>
         <Form.Item
           name="firstName"
           rules={[{ required: true, message: "Please input first name!" }]}
