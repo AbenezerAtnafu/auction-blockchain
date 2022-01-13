@@ -1,5 +1,5 @@
-import React, { createContext, useEffect, useState } from "react";
-import Web3Instance from "../Web3/Web3Instance";
+import React, { createContext, useEffect, useState } from 'react';
+import Web3Instance from '../Web3/Web3Instance';
 
 const Web3Context = createContext();
 
@@ -21,15 +21,15 @@ const Web3ContextProvider = ({ children }) => {
         resolve({auction, accounts});
       } catch (error) {
         console.log(error);
-        reject(error)
+        reject(error);
       }
-    })
+    });
   };
 
   useEffect(async () => {
     await loadBlockChain();
   }, []);
-  
+
   return (
     <Web3Context.Provider value={loadBlockChain}>
       {children}
