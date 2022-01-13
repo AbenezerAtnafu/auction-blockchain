@@ -1,5 +1,6 @@
-import { Card, Row, Col, Button, Typography } from 'antd';
-import React from 'react';
+import { Card, Row, Col, Button, Typography } from "antd";
+import React from "react";
+import CustomCountdown from "../../countdown/index.jsx";
 
 const { Text } = Typography;
 
@@ -12,9 +13,9 @@ const ProductCard = ({ product, onCardClicked }) => {
         style={{ width: 260 }}
         cover={
           <img
-            height={'180px'}
+            height={"180px"}
             style={{
-              objectFit: 'fill',
+              objectFit: "fill",
             }}
             alt="example"
             src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
@@ -28,26 +29,31 @@ const ProductCard = ({ product, onCardClicked }) => {
       >
         <Row>
           <Col span={12}>
-            <Text>Product Name</Text>
+            <Text>Name</Text>
           </Col>
-          <Col span={12} style={{ textAlign: 'center' }}>
-            <Text>{product.name}</Text>
+          <Col span={12} style={{ textAlign: "center" }}>
+            <Text>{product.productName}</Text>
           </Col>
         </Row>
         <Row>
           <Col span={14}>
-            <Text>Product Category</Text>
+            <Text>Category</Text>
           </Col>
-          <Col span={10} style={{ textAlign: 'center' }}>
+          <Col span={10} style={{ textAlign: "center" }}>
             <Text>{product.category}</Text>
           </Col>
         </Row>
         <Row>
           <Col span={12}>
-            <Text>Product initial price</Text>
+            <Text>Initial price</Text>
           </Col>
-          <Col span={12} style={{ textAlign: 'center' }}>
+          <Col span={12} style={{ textAlign: "center" }}>
             <Text>{product.price}</Text>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <CustomCountdown startTime={product.startTime} endTime={product.endTime}/>
           </Col>
         </Row>
       </Card>
