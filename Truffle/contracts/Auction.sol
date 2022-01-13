@@ -16,6 +16,7 @@ contract Auction {
     mapping (address => uint) public storesBySellers;            // store by seller address, used to prevent more than one store per user
     mapping (address => uint) public productCountByStore;        // product count by store
     mapping (uint => mapping(uint => Bid)) public bidsByProduct;
+    mapping (uint => uint) public bidCountByProduct;
     mapping (address => User) public usersByAddress;
 
     // events
@@ -72,7 +73,7 @@ contract Auction {
     // store
     struct Store{
         uint storeId;
-        address usersByAddress;
+        address userAddress;
         string storeName;   
         string storeFrontImage;
         uint balance;
@@ -133,6 +134,7 @@ contract Auction {
     function placeBid (uint productId, uint bidAmount) public returns (bool success){
         bidCount = bidCount.add(1);
         bidsByProduct[productId][bidCount] = Bid(bidCount, productId, bidAmount, msg.sender);
+        bidCountByProduct[productId] += 1;
         User memory bidder = usersByAddress[msg.sender];
         address x = storesByProductId[productId];
         Product memory product = stores[x][productId];

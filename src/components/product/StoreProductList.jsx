@@ -29,19 +29,17 @@ const StoreProductList = ({ web3, shop }) => {
       const product = await web3Instance.auction.methods
       .stores(account[0], store)
       .call();
-      
-      console.log(product)
+      setData([...data, product]);
+      console.log(product);
     }
     
 
-    // console.log(products, "products");
-
-    fetch(fakeDataUrl)
-      .then((res) => res.json())
-      .then((body) => {
-        setData(data.concat(body.results));
-        message.success(`${body.results.length} more items loaded!`);
-      });
+    // fetch(fakeDataUrl)
+    //   .then((res) => res.json())
+    //   .then((body) => {
+    //     setData(data.concat(body.results));
+    //     message.success(`${body.results.length} more items loaded!`);
+    //   });
   };
 
   useEffect(() => {
@@ -93,11 +91,11 @@ const StoreProductList = ({ web3, shop }) => {
           {(item) => (
             <List.Item key={item.email}>
               <List.Item.Meta
-                avatar={<Avatar src={item.picture.large} />}
-                title={<a href="https://ant.design">{item.name.last}</a>}
-                description={item.email}
+                // avatar={<Avatar src={item.picture.large} />}
+                title={<a href="https://ant.design">{item.productName}</a>}
+                description={item.category}
               />
-              <div>Content</div>
+              <div>{item.endTime}</div>
             </List.Item>
           )}
         </VirtualList>
