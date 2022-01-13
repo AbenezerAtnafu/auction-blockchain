@@ -3,10 +3,11 @@ import React from 'react';
 
 const { Text } = Typography;
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, onCardClicked }) => {
   return (
     <>
       <Card
+        onClick={() => onCardClicked(product)}
         hoverable
         style={{ width: 260 }}
         cover={

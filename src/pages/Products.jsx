@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Col, Divider, Row, Typography } from 'antd';
+import { Col, Divider, Row, Typography, Spin } from 'antd';
 import StoreBidList from '../components/bid/StoreBidList.jsx';
 import ProductCard from '../components/product/ProductCard/index.jsx';
 import { Web3Context } from '../components/Web3Context.js';
+import CreateProduct from '../components/product/CreateProduct.jsx';
 
 const { Title } = Typography;
 
@@ -11,31 +12,73 @@ const Products = () => {
   const [loading, setLoading] = useState(true);
   const [productList, setProductList] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState([]);
+  const [createProductModal, setCreateProductModal] = useState(false);
 
-  const productsList = [
-    {
-      name: 'jebena',
-      category: 'mtsm',
-      startTime: '10000',
-      endTime: '20000',
-      price: '200',
-      seller: '0x12452',
-      condition: 'new',
-    },
-    {
-      name: 'sini',
-      category: 'ahaaa',
-      startTime: '10000',
-      endTime: '20000',
-      price: '20',
-      seller: '0x12453',
-      condition: 'used',
-    },
-  ];
+  const handleProductSubmit = async (
+    name,
+    category,
+    startTime,
+    endTime,
+    price,
+    productCondition
+  ) => {
+    console.log(name, category, startTime, endTime, price, productCondition);
+    setLoading(true);
+    const web3Instance = await web3();
+    const account = await web3Instance.accounts;
+    await web3Instance.auction.methods
+      .addProduct(name, category, startTime, endTime, price, productCondition)
+      .send({ from: account[0] })
+      .once('receipt', (receipt) => {
+        setLoading(false);
+        setCreateProductModal(false);
+      });
+    message.success('Product Added Successfully!');
+  };
+
+  const loadProducts = async () => {
+    setLoading(true);
+    const web3Instance = await web3();
+    const productCount = await web3Instance.auction.methods
+      .productCount()
+      .call();
+
+    const account = await web3Instance.accounts;
+    for (let i = 1; i <= productCount; i++) {
+      const product = await web3Instance.auction.methods.productById(i).call();
+      setProductList((productList) => [...productList, product]);
+      if (product.sellerAddress === account[0]) {
+        setSelectedProduct(product);
+      } else {
+        setSelectedProduct(product);
+      }
+    }
+    setLoading(false);
+  };
 
   const handleCardClicked = (product) => {
     setSelectedProduct(product);
   };
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '200px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Spin tip="Loading ..." />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -58,23 +101,36 @@ const Products = () => {
               overflowY: 'scroll',
             }}
           >
-            {productsList.map((p) => {
-              return (
-                <Col span={8} style={{ marginTop: '10px' }}>
-                  <ProductCard
-                    onCardClicked={handleCardClicked}
-                    key={p.name}
-                    product={p}
-                  />
-                </Col>
-              );
-            })}
+            {productList.length > 0 ? (
+              productList.map((p, index) => {
+                return (
+                  <Col span={8} style={{ marginTop: '10px' }}>
+                    <ProductCard
+                      onCardClicked={handleCardClicked}
+                      key={index}
+                      product={p}
+                    />
+                  </Col>
+                );
+              })
+            ) : (
+              <Col span={8} style={{ marginTop: '10px' }}>
+                <div>No Products found!</div>
+              </Col>
+            )}
           </Row>
         </Col>
         <Col span={8}>
-          <StoreBidList product={productsList[0]} />
+          <StoreBidList web3={web3} product={selectedProduct} />
         </Col>
       </Row>
+
+      <CreateProduct
+        isOpen={createProductModal}
+        onClose={() => setCreateProductModal(false)}
+        handleSubmit={handleProductSubmit}
+        loading={loading}
+      />
     </>
   );
 };
