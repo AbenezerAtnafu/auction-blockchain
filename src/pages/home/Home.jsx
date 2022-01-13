@@ -16,20 +16,6 @@ const Home = () => {
   const [user, setUser] = useState(false);
   const [modal, setModal] = useState(false);
 
-  const handleSubmit = async (values) => {
-    const web3Context = await web3();
-    const account = await web3Context.accounts;
-    const res = await web3Context.auction.methods
-      .addUser(account[0], ...Object.values(values))
-      .send({ from: account[0] })
-      .once('receipt', (receipt) => {
-        setLoading(false);
-        setModal(false);
-        message.success(
-          `Account Created Successfully! Transaction hash: ${receipt.transactionHash}`
-        );
-      });
-  };
 
   useEffect(async () => {
     const web3Context = await web3();
@@ -83,10 +69,13 @@ const Home = () => {
               <Link
                 to={"/register"}
               >
-                Please Create Account.
+                <h2 style={{color:"blue"}}>
+
+                Please Create an Account.
+                </h2>
               </Link>
             ) : (
-              <Button>Products</Button>
+              <Link to={"/products"}>Start Bidding</Link>
             )}
           </div>
         </div>

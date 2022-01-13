@@ -6,17 +6,18 @@ const Web3Context = createContext();
 export { Web3Context };
 
 const Web3ContextProvider = ({ children }) => {
-  const [accounts, setAccounts] = useState();
-  const [auction, setAuction] = useState();
+  window.ethereum.on('accountsChanged', function (accounts) {
+    window.location.reload();
+  })
 
   const loadBlockChain = async () => {
-    // setAuction(await Web3Instance.auction);
-    // setAccounts(await Web3Instance.accounts);
     return new Promise(async (resolve,reject) =>{
       try {
         const auction = await Web3Instance.auction;
         const accounts = await Web3Instance.accounts;
-        window.document.cookie = `${accounts[0]}`
+        window.document.cookie = `pk=${accounts[0]}`
+        const hasAccount = await auction.methods.getUser(accounts[0]).call();
+        window.document.cookie = `hasAccount=${!(hasAccount._userAddress.toString() === "0x0000000000000000000000000000000000000000")}`
         resolve({auction, accounts});
       } catch (error) {
         console.log(error);

@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import ShopCard from '../components/seller/ShopCard/index.jsx';
-import CreateShop from '../components/seller/CreateShop/index.jsx';
+import { useState, useEffect } from "react";
+import ShopCard from "../components/seller/ShopCard/index.jsx";
+import CreateShop from "../components/seller/CreateShop/index.jsx";
 import {
   Typography,
   Divider,
@@ -10,11 +10,12 @@ import {
   Spin,
   Space,
   message,
-} from 'antd';
-import { useContext } from 'react';
-import { Web3Context } from '../components/Web3Context';
-import StoreProductList from '../components/product/StoreProductList.jsx';
-import CreateProduct from '../components/product/CreateProduct.jsx';
+} from "antd";
+import { useContext } from "react";
+import { Web3Context } from "../components/Web3Context";
+import StoreProductList from "../components/product/StoreProductList.jsx";
+import CreateProduct from "../components/product/CreateProduct.jsx";
+import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 const { Title } = Typography;
 
@@ -26,20 +27,23 @@ const Shops = () => {
   const [selectedShop, setSelectedShop] = useState();
   const [createProductModal, setCreateProductModal] = useState();
   const [currentAccount, setCurrentAccount] = useState(false);
+  const [redirect, setRedirect] = useState(false);
+  const [selectedUserAddress, setSelectedUserAddress] = useState();
 
   const handleShopSubmit = async (values) => {
     setLoading(true);
     const web3Instance = await web3();
     const account = await web3Instance.accounts;
     await web3Instance.auction.methods
-      .addStore(values['_name'], values['_email'], values['_storeFrontImage'])
+      .addStore(values["_name"], values["_email"], values["_storeFrontImage"])
       .send({ from: account[0] })
-      .once('receipt', (receipt) => {
+      .once("receipt", (receipt) => {
         setLoading(false);
         setCreateShopModal(false);
         message.success(
           `Shop Created Successfully! ${receipt.transactionHash}`
         );
+        window.location.reload();
       });
   };
 
@@ -58,11 +62,12 @@ const Shops = () => {
     await web3Instance.auction.methods
       .addProduct(name, category, startTime, endTime, price, productCondition)
       .send({ from: account[0] })
-      .once('receipt', (receipt) => {
+      .once("receipt", (receipt) => {
         setLoading(false);
         setCreateProductModal(false);
       });
-    message.success('Product Added Successfully!');
+    message.success("Product Added Successfully!");
+    window.location.reload();
   };
 
   const loadShops = async () => {
@@ -76,7 +81,6 @@ const Shops = () => {
         .usersByAddress(shop.userAddress)
         .call();
       setShopList((shopList) => [...shopList, shop]);
-      console.log(shop);
       if (shop.userAddress === account[0]) {
         setSelectedShop(shop);
         setCurrentAccount(true);
@@ -89,37 +93,40 @@ const Shops = () => {
 
   const handleCardClicked = async (shop) => {
     setSelectedShop(shop);
-    // setCurrentAccount(shop.userAddress === account[0])
+    console.log(shop.userAddress);
+    setSelectedUserAddress(shop.userAddress);
   };
 
   useEffect(() => {
     loadShops();
   }, []);
 
-  useEffect(() => {
-    setSelectedShop(shopList[0]);
-  }, [selectedShop]);
+  
 
   if (loading && !selectedShop) {
     return (
       <div
         style={{
-          width: '100%',
-          height: '200px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
+          width: "100%",
+          height: "200px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <Spin tip="Loading ..." />
       </div>
     );
   }
+
+  if(redirect){
+    return <Redirect to={redirect} />;
+  }
   return (
     <>
       <Row>
         <Col flex={5}>
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: "center" }}>
             <Title>Shop List</Title>
           </div>
         </Col>
@@ -129,7 +136,15 @@ const Shops = () => {
               type="primary"
               shape="round"
               size="large"
-              onClick={() => setCreateShopModal(true)}
+              onClick={() => {
+                const hasAccount = window.document.cookie.split(";")[6].split("=")[1];
+                if (hasAccount==="false") {
+                  message.error("Please create your account!");
+                  setRedirect("/register");
+                } else {
+                  setCreateShopModal(true);
+                }
+              }}
             >
               Create Shop
             </Button>
@@ -150,16 +165,16 @@ const Shops = () => {
         <Col flex={16}>
           <Row
             style={{
-              maxWidth: '864px',
-              height: '100vh',
-              marginRight: '4px',
-              overflowY: 'scroll',
+              maxWidth: "864px",
+              height: "100vh",
+              marginRight: "4px",
+              overflowY: "scroll",
             }}
           >
             {shopList.length > 0 ? (
               shopList.map((s) => {
                 return (
-                  <Col span={8} style={{ marginTop: '10px' }}>
+                  <Col span={8} style={{ marginTop: "10px" }}>
                     <ShopCard
                       onCardClicked={handleCardClicked}
                       shop={s}
@@ -169,14 +184,14 @@ const Shops = () => {
                 );
               })
             ) : (
-              <Col span={8} style={{ marginTop: '10px' }}>
+              <Col span={8} style={{ marginTop: "10px" }}>
                 <div>No Shops found!</div>
               </Col>
             )}
           </Row>
         </Col>
         <Col span={8}>
-          <StoreProductList web3={web3} shop={selectedShop} />
+          <StoreProductList web3={web3} shop={selectedShop} shopUserAddress={selectedUserAddress} />
         </Col>
       </Row>
 

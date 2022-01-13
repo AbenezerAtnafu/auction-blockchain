@@ -16,7 +16,7 @@ const Navbar = () => {
     setAccount(web3Instance.accounts);
   }, []);
   return (
-    <Header>
+    <Header style={{background:"white"}}>
       <div className="logo" />
       <div
         style={{
@@ -26,21 +26,22 @@ const Navbar = () => {
           alignItems: 'left',
         }}
       >
-        <Space theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+        <Space theme="light" mode="horizontal" defaultSelectedKeys={['2']}>
           <Link to="/">
-            <Text style={{ color: 'white' }}>Eshi Bidding</Text>
+            <Text style={{ color: 'black', fontSize:'25px', fontWeight:"900"}}>Eshi Bidding</Text>
           </Link>
         </Space>
 
-        <Space size={'large'}>
-          <Link to="/shops">Shops</Link>
-          <Link to="/products">Products</Link>
-          <Link to="/bids">Bids</Link>
+        <Space size={40}>
+          <Link style={{  fontSize:'20px', fontWeight:"600"}} to="/shops">Shops</Link>
+          <Link  style={{  fontSize:'20px', fontWeight:"600"}} to="/products">Products</Link>
+          <Link   style={{  fontSize:'20px', fontWeight:"600"}} to="/bids">Bids</Link>
         </Space>
 
         <Dropdown
           overlay={
             <Menu>
+              <Menu.Item>{account}</Menu.Item>
               <Menu.Item>{account}</Menu.Item>
             </Menu>
           }

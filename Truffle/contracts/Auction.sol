@@ -17,6 +17,7 @@ contract Auction {
     mapping (uint => mapping(uint => Bid)) public bidsByProduct;
     mapping (uint => uint) public bidCountByProduct;
     mapping (address => User) public usersByAddress;
+    mapping (uint => Product) public productById;
 
     // events
     event NewProductAdded(address storeAddress, address productAddress);
@@ -248,7 +249,7 @@ contract Auction {
 
         stores[msg.sender][productCount] = product;
         storesByProductId[productCount] = msg.sender;
-
+        productById[productCount] = product;
         // update product count by store
         productCountByStore[msg.sender] = productCountByStore[msg.sender].add(
             1

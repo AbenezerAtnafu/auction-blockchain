@@ -44,7 +44,7 @@ const ProductCard = ({ product, onCardClicked }) => {
         </Row>
         <Row>
           <Col span={12}>
-            <Text>Product Price</Text>
+            <Text>Product initial price</Text>
           </Col>
           <Col span={12} style={{ textAlign: 'center' }}>
             <Text>{product.price}</Text>

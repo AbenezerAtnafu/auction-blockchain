@@ -107,7 +107,7 @@ const CreateProduct = ({ isOpen, onClose, handleSubmit, loading }) => {
           >
             <Input
               size="large"
-              placeholder="Price"
+              placeholder="Initial Price"
               type="number"
               onChange={onPriceChange}
             />

@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { Modal, Form, Input, Button, Upload, Typography, message } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Modal, Form, Input, Button, Typography } from "antd";
 
 // address storeAddress;
 // bytes32 storeName;
@@ -11,7 +9,6 @@ import { PlusOutlined } from "@ant-design/icons";
 // uint productCount;
 
 const CreateShop = ({ isOpen, onClose, handleSubmit, loading }) => {
-  
   return (
     <>
       <Modal
