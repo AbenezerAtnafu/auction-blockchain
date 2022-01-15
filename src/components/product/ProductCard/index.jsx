@@ -23,7 +23,7 @@ const ProductCard = ({ product, onCardClicked }) => {
           />
         }
         actions={[
-          <Link to={'/product-detail'}>
+          <Link to={`/product-detail/${product.id}`}>
             <Button type="primary" shape="round" size="large">
               Product Detail
             </Button>

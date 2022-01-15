@@ -16,11 +16,13 @@ import { Web3Context } from "../components/Web3Context";
 import StoreProductList from "../components/product/StoreProductList.jsx";
 import CreateProduct from "../components/product/CreateProduct.jsx";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import { useCookies } from "react-cookie";
 
 const { Title } = Typography;
 
 const Shops = () => {
   const web3 = useContext(Web3Context);
+  const [cookies, setCookie] = useCookies();
   const [isModalOpen, setCreateShopModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [shopList, setShopList] = useState([]);
@@ -137,8 +139,7 @@ const Shops = () => {
               shape="round"
               size="large"
               onClick={() => {
-                const hasAccount = window.document.cookie.split(";")[2].split("=")[1];
-                if (hasAccount==="false") {
+                if (cookies['hasAccount']==="false") {
                   message.error("Please create your account!");
                   setRedirect("/register");
                 } else {

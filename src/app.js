@@ -37,7 +37,7 @@ const App = () => {
               <Route path="/bids">
                 <Bids />
               </Route>
-              <Route path={'/product-detail'}>
+              <Route path={'/product-detail/:id'}>
                 <ProductDetail />
               </Route>
             </div>

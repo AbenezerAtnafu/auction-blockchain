@@ -1,13 +1,14 @@
 import { useState, useContext, useEffect } from "react";
 import { Web3Context } from "../Web3Context";
-import { Modal, Form, Input, Button, Upload, Typography, message } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import {  Form, Input, Button, Typography, message } from "antd";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import { useCookies } from "react-cookie";
 
 const CreateAccount = ({ userPk, onClose }) => {
   const web3 = useContext(Web3Context);
   const [loading, setLoading] = useState(false);
   const [redirect, setRedirect] = useState();
+  const [cookies, setCookie] = useCookies();
 
   const handleSubmit = async (values) => {
     setLoading(true);
@@ -26,7 +27,7 @@ const CreateAccount = ({ userPk, onClose }) => {
   };
 
   useEffect(() => {
-    const hasAccount = window.document.cookie.split(";")[2].split("=")[1];
+    const hasAccount = cookies["hasAccount"];
     if (hasAccount === "true") {
       setRedirect("/");
     }
@@ -50,7 +51,7 @@ const CreateAccount = ({ userPk, onClose }) => {
         }}
       >
         <Typography.Title>
-          Your current address is: {window.document.cookie.split(";")[2]}
+          Your current address is: {cookies["pk"]}
         </Typography.Title>
         <Form.Item
           name="firstName"

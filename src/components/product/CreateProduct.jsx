@@ -36,7 +36,6 @@ const CreateProduct = ({ isOpen, onClose, handleSubmit, loading }) => {
     setCategory(c);
   };
   const onDateChange = (d) => {
-    console.log(new Date( d[0]._d).getTime().toString());
     setStartTime(new Date( d[0]._d).getTime());
     setEndTime(new Date( d[1]._d).getTime());
   };

@@ -4,7 +4,7 @@ pragma experimental ABIEncoderV2;
 import "./SafeMath.sol";
 
 contract Auction {
-    using SafeMath for uint256;
+    using SafeMath for uint;
 
     string public name = "Auction";
 
@@ -27,19 +27,19 @@ contract Auction {
         string email,
         string storeFrontImage
     );
-    event NewBid(uint256 id, Product product, uint256 bidAmount, User bidder);
+    event NewBid(uint id, uint product, uint bidAmount, address bidder);
 
     modifier OnlyOwner() {
         require(msg.sender == owner, "ONLY ADMIN IS ALLOWED");
         _;
     }
 
-    modifier onlyBefore(uint256 _time) {
+    modifier onlyBefore(uint _time) {
         require(block.timestamp < _time);
         _;
     }
 
-    modifier onlyAfter(uint256 _time) {
+    modifier onlyAfter(uint _time) {
         require(block.timestamp > _time);
         _;
     }
@@ -71,8 +71,8 @@ contract Auction {
         address userAddress;
         string storeName;   
         string storeFrontImage;
-        uint256 balance;
-        uint256 productCount;
+        uint balance;
+        uint productCount;
     }
 
     // product
@@ -88,25 +88,25 @@ contract Auction {
         Deleted
     }
     struct Product {
-        uint256 id;
+        uint id;
         string productName; //
         string category; //
         string imageLink; //
-        uint256 startTime; //
-        uint256 endTime; //
-        uint256 price; //
+        uint startTime; //
+        uint endTime; //
+        uint price; //
         address buyer;
         address sellerAddress;
         ProductCondition productCondition; //
         ProductState productState; //
-        bool exists;
+        uint[] bidsId;
     }
 
     // auction
     struct Bid {
-        uint256 id;
-        uint256 productId;
-        uint256 bidAmount;
+        uint id;
+        uint productId;
+        uint bidAmount;
         address bidderAddress;
     }
 
@@ -160,27 +160,25 @@ contract Auction {
     }
 
     // create bid
-    function placeBid(uint256 productId, uint256 bidAmount)
+    function placeBid(uint productId, uint bidAmount)
         public
         returns (bool success)
     {
-        bidCount = bidCount.add(1);
-        bidsByProduct[productId][bidCount] = Bid(bidCount, productId, bidAmount, msg.sender);
+        bidCount += 1;
+        bidsByProduct[productId][bidCountByProduct[productId]] = Bid(bidCount, productId, bidAmount, msg.sender);
         bidCountByProduct[productId] += 1;
-        User memory bidder = usersByAddress[msg.sender];
-        address x = storesByProductId[productId];
-        Product memory product = stores[x][productId];
-        emit NewBid(bidCount, product, bidAmount, bidder);
+        emit NewBid(bidCount, productId, bidAmount, msg.sender);
         return true;
     }
 
     // get product bids
-    function getProductBids(uint256 productId, uint256 bidId)
-        public
-        returns (Bid memory bids)
-    {
-        return bidsByProduct[productId][bidId];
-    }
+    // function getProductBids(uint productId, uint bidId)
+    //     public
+    //     view
+    //     returns (Bid memory bids)
+    // {
+    //     return bidsByProduct[productId][bidId];
+    // }
 
     // create store
     modifier notHaveStore(address sellerAddress) {
@@ -214,23 +212,24 @@ contract Auction {
         );
         _;
     }
-    modifier productExists(uint256 _id) {
-        require(
-            stores[storesByProductId[_id]][_id].exists,
-            "Product not found."
-        );
-        _;
-    }
+    // modifier productExists(uint _id) {
+    //     require(
+    //         stores[storesByProductId[_id]][_id].exists,
+    //         "Product not found."
+    //     );
+    //     _;
+    // }
 
     function addProduct(
         string memory _name,
         string memory _category,
-        uint256 _startTime,
-        uint256 _endTime,
-        uint256 _price,
-        uint256 _productCondition
+        uint _startTime,
+        uint _endTime,
+        uint _price,
+        uint _productCondition
     ) public {
         productCount = productCount.add(1);
+        uint[] memory emptyId;
 
         Product memory product = Product(
             productCount,
@@ -244,7 +243,7 @@ contract Auction {
             msg.sender,
             ProductCondition(_productCondition),
             ProductState.ForSale,
-            true
+            emptyId
         );
 
         stores[msg.sender][productCount] = product;
@@ -257,21 +256,22 @@ contract Auction {
     }
 
     // get product
-    function getProduct(uint256 _id)
+    function getProduct(uint _id)
         public
         view
-        productExists(_id)
+        // productExists(_id)
         returns (
-            uint256 id,
+            uint id,
             string memory productName,
             string memory category,
-            uint256 startTime,
-            uint256 endTime,
-            uint256 price,
+            uint startTime,
+            uint endTime,
+            uint price,
             address buyer,
             address sellerAddress,
             ProductCondition condition,
-            ProductState productState
+            ProductState productState,
+            uint[] memory bids
         )
     {
         address x = storesByProductId[_id];
@@ -287,7 +287,8 @@ contract Auction {
             product.buyer,
             product.sellerAddress,
             product.productCondition,
-            product.productState
+            product.productState,
+            product.bidsId
         );
     }
 }

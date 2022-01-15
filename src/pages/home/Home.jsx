@@ -1,9 +1,6 @@
 import { useEffect, useContext, useState } from 'react';
 import { Web3Context } from '../../components/Web3Context.js';
-import CreateAccount from '../../components/user/CreateAccount.jsx';
-
-import { Layout, Typography, Image, Spin, Button, message } from 'antd';
-
+import { Layout, Typography, Image, Spin,  } from 'antd';
 import logo from '../../assets/images/logo1.png';
 import { Link } from 'react-router-dom';
 
@@ -14,8 +11,6 @@ const Home = () => {
   const web3 = useContext(Web3Context);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(false);
-  const [modal, setModal] = useState(false);
-
 
   useEffect(async () => {
     const web3Context = await web3();

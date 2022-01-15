@@ -1,25 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import { Col, Divider, Row, Typography, Card, Avatar } from 'antd';
+import React, { useState, useEffect, useContext } from "react";
+import { Col, Divider, Row, Typography, Card, Avatar, Spin } from "antd";
+import { Web3Context } from "../../Web3Context.js";
+import { useParams } from "react-router";
 
 import {
   EditOutlined,
   EllipsisOutlined,
   SettingOutlined,
-} from '@ant-design/icons';
-import StoreBidList from '../../bid/StoreBidList.jsx';
-import BiddingHistory from '../../bid/BiddingHistory.jsx';
+} from "@ant-design/icons";
+import StoreBidList from "../../bid/StoreBidList.jsx";
+import BiddingHistory from "../../bid/BiddingHistory.jsx";
+import MultipleCountDown from "../../multipleCountDown/index.jsx";
 
 const { Meta } = Card;
 
 const { Title } = Typography;
 
 const ProductDetail = () => {
+  const web3 = useContext(Web3Context);
+  const { id } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [currentProduct, setCurrentProduct] = useState();
+
+  useEffect(async () => {
+    const web3Instance = await web3();
+    let product = await web3Instance.auction.methods.getProduct(id).call();
+    
+    setCurrentProduct(product);
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Spin tip="Loading..." />
+      </div>
+    );
+  }
+
   return (
     <>
       <Row>
         <Col flex={5}>
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: "center" }}>
             <Title>Product Detail</Title>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <MultipleCountDown
+              startDate={parseInt(currentProduct.startTime)}
+              endDate={parseInt(currentProduct.endTime)}
+            />
           </div>
         </Col>
       </Row>
@@ -45,57 +87,61 @@ const ProductDetail = () => {
                       <Col span={12}>
                         <Meta
                           title="Name"
-                          description="This is the description"
+                          description={currentProduct.productName}
                         />
                       </Col>
                       <Col span={12}>
                         <Meta
                           title="Category"
-                          description="This is the description"
+                          description={currentProduct.category}
                         />
                       </Col>
                       <Col
                         span={12}
                         style={{
-                          marginTop: '20px',
+                          marginTop: "20px",
                         }}
                       >
                         <Meta
-                          title="Price"
-                          description="This is the description"
+                          title="Initial Price"
+                          description={currentProduct.price}
                         />
                       </Col>
                       <Col
                         span={12}
                         style={{
-                          marginTop: '20px',
+                          marginTop: "20px",
                         }}
                       >
                         <Meta
                           title="Condition"
-                          description="This is the description"
+                          description={currentProduct.productCondition}
                         />
                       </Col>
                       <Col
                         span={12}
                         style={{
-                          marginTop: '20px',
+                          marginTop: "20px",
                         }}
                       >
                         <Meta
                           title="Start Time"
-                          description="This is the description"
+                          description={new Date(
+                            parseInt(currentProduct.startTime)
+                          ).toUTCString()}
                         />
                       </Col>
                       <Col
                         span={12}
                         style={{
-                          marginTop: '20px',
+                          marginTop: "20px",
                         }}
                       >
                         <Meta
                           title="End Time"
-                          description="This is the description"
+                          description={new Date(
+                            parseInt(currentProduct.endTime)
+                          ).toUTCString()}
                         />
                       </Col>
                     </Row>
@@ -105,7 +151,10 @@ const ProductDetail = () => {
               </Row>
             </Col>
             <Col span={8}>
-              <BiddingHistory />
+              <BiddingHistory
+                productId={currentProduct.id}
+                initialPrice={currentProduct.price}
+              />
             </Col>
           </Row>
         </Col>

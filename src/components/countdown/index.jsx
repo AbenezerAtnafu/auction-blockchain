@@ -23,7 +23,7 @@ const CustomCountdown = ({ startTime, endTime }) => {
     return (
       <>
         <span style={{ paddingLeft: "24px", color: "red", fontSize: "20px" }}>
-          Auction Ended!
+          Auction has Ended!
         </span>
       </>
     );
