@@ -43,9 +43,9 @@ const Navbar = () => {
           <Link style={{ fontSize: '20px', fontWeight: '600' }} to="/products">
             Products
           </Link>
-          <Link style={{ fontSize: '20px', fontWeight: '600' }} to="/bids">
+          {/* <Link style={{ fontSize: '20px', fontWeight: '600' }} to="/bids">
             Bids
-          </Link>
+          </Link> */}
         </Space>
 
         <Dropdown

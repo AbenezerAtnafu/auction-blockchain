@@ -34,7 +34,7 @@ const CustomCountdown = ({ startTime, endTime }) => {
         <div style={{ paddingLeft: "24px", color: "blue", fontSize: "20px" }}>
           Auction Starts in:
         </div>
-        <Countdown date={startTime} renderer={renderer} />
+        <Countdown date={startDate} renderer={renderer} />
       </>
     );
   }

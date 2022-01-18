@@ -40,7 +40,7 @@ const CreateShop = ({ isOpen, onClose, handleSubmit, loading }) => {
             <Input.TextArea rows={5} placeholder="Description" />
           </Form.Item>
           <Form.Item>
-            <Typography.Text>Shop Photo</Typography.Text>
+            {/* <Typography.Text>Shop Photo</Typography.Text> */}
             {/* <Upload
               listType="picture-card"
               fileList={form.fileList}

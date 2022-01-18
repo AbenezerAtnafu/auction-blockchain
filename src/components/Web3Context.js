@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import Web3Instance from "../Web3/Web3Instance";
 import { useCookies } from "react-cookie";
+import { notification } from "antd";
 const Web3Context = createContext();
 
 export { Web3Context };
@@ -22,8 +23,10 @@ const Web3ContextProvider = ({ children }) => {
         setCookie("pk", accounts[0]);
         setCookie(
           "hasAccount",
-          !(hasAccount._userAddress.toString() ===
-            "0x0000000000000000000000000000000000000000")
+          !(
+            hasAccount._userAddress.toString() ===
+            "0x0000000000000000000000000000000000000000"
+          )
         );
 
         resolve({ auction, accounts, auctionEvents });

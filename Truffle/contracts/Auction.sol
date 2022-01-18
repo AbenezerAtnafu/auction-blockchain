@@ -165,8 +165,8 @@ contract Auction {
         returns (bool success)
     {
         bidCount += 1;
-        bidsByProduct[productId][bidCountByProduct[productId]] = Bid(bidCount, productId, bidAmount, msg.sender);
         bidCountByProduct[productId] += 1;
+        bidsByProduct[productId][bidCountByProduct[productId]] = Bid(bidCount, productId, bidAmount, msg.sender);
         emit NewBid(bidCount, productId, bidAmount, msg.sender);
         return true;
     }

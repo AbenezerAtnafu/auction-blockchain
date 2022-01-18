@@ -22,12 +22,16 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [currentProduct, setCurrentProduct] = useState();
 
-  useEffect(async () => {
+  const appendData = async ()=>{
     const web3Instance = await web3();
     let product = await web3Instance.auction.methods.getProduct(id).call();
     
     setCurrentProduct(product);
     setLoading(false);
+  }
+
+  useEffect( () => {
+    appendData()
   }, []);
 
   if (loading) {

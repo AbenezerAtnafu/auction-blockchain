@@ -33,14 +33,12 @@ const StoreProductList = ({ web3, shop, shopUserAddress }) => {
       .productCount()
       .call();
 
-    console.log(shopUserAddress, "store Product card");
     for (let store = 0; store <= storeProductCount; store++) {
       const product = await web3Instance.auction.methods
         .stores(shopUserAddress, store)
         .call();
       setData([...data, product]);
     }
-    console.log(data)
   };
 
   // useEffect(() => {
@@ -84,8 +82,9 @@ const StoreProductList = ({ web3, shop, shopUserAddress }) => {
           </Descriptions.Item>
         </Descriptions>
       </PageHeader>
-      <List
-        dataSource={data}
+      {
+        shop  ?  <List
+        dataSource={shop.products}
         render={(item) => (
           <List.Item key={item.email}>
             <List.Item.Meta
@@ -96,7 +95,9 @@ const StoreProductList = ({ web3, shop, shopUserAddress }) => {
             <div>{item.endTime}</div>
           </List.Item>
         )}
-      />
+      />:""
+      }
+     
     </div>
   );
 };

@@ -2793,12 +2793,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x6F651fCCfba338B2aFA1Ce9b67Dbb84b0dFBf296",
-      "transactionHash": "0x8759bb552a201d16ff115a29031c72a325d2dd20e5bb2428d9c1bf3377c1edd8"
+      "address": "0x56aD64C76cD1441eD640b8C6DCd85a33Dd937C34",
+      "transactionHash": "0xa1007470aa32819375ce8abdf4c9ff75d6bf890a8de5a476e48233337eefd09d"
     }
   },
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-01-14T10:40:44.876Z",
+  "updatedAt": "2022-01-18T04:31:16.959Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "Math operations with safety checks that revert on error",

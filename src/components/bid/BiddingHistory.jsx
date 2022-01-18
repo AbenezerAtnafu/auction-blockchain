@@ -18,55 +18,67 @@ const ContainerHeight = 400;
 const BiddingHistory = ({ productId, initialPrice }) => {
   const web3 = useContext(Web3Context);
   const [bidList, setBidList] = useState([]);
-  const [currentBid, setCurrentBid] = useState(initialPrice);
+  const [currentBid, setCurrentBid] = useState(0);
   const [maxBid, setMaxBid] = useState(initialPrice);
   const [loading, setLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [loadBids, setLoadBids] = useState(true);
+  const [auctionEvents, setAuctionEvents] = useState();
 
-  useEffect(async () => {
+  const fetchBidHistory = async () => {
+    setLoading(true);
     const web3Instance = await web3();
-    web3Instance.auction.methods
+    setAuctionEvents(await web3Instance.auction.auctionEvents);
+    const bidCount = await web3Instance.auction.methods
       .bidCountByProduct(productId)
-      .call()
-      .then((bidCount) => {
-        let productBids = [];
-        for (let i = 1; i < bidCount; i++) {
-          web3Instance.auction.methods
-            .bidsByProduct(productId, i)
-            .call()
-            .then((bid) => {
-              productBids.push(bid);
-              if (maxBid < bid.bidAmount) {
-                setMaxBid(bid.bidAmount);
-              }
-              console.log(bid, "bid");
-              setBidList(productBids);
-            });
-        }
-      });
+      .call();
+    let productBids = [];
+    for (let i = bidCount; i >= 1; i--) {
+      const bid = await web3Instance.auction.methods
+        .bidsByProduct(productId, i)
+        .call();
+      bid.user = await web3Instance.auction.methods
+        .usersByAddress(bid.bidderAddress)
+        .call();
+      productBids.push(bid);
+      if (maxBid < parseInt(bid.bidAmount)) {
+        setMaxBid(bid.bidAmount);
+      }
+    }
+    setBidList(productBids);
     setLoadBids(false);
-  }, []);
+  };
 
   const submitBid = async () => {
-    setLoading(true);
+    setSubmitLoading(true);
     const web3Instance = await web3();
     const account = await web3Instance.accounts;
     const res = await web3Instance.auction.methods
       .placeBid(productId, currentBid)
       .send({ from: account[0] })
       .once("receipt", (receipt) => {
-        setLoading(false);
-        notification.success(`Your Bid is placed! `);
+        setSubmitLoading(false);
+        fetchBidHistory();
+        notification.success({ message: "Your Bid is placed! " });
+        // window.location.reload();
       });
   };
 
+  useEffect(() => {
+    fetchBidHistory();
+    auctionEvents
+      ? auctionEvents
+          .NewBid({})
+          .on("data", async function (event) {
+            console.log(event.returnValues);
+            notification.info({ message: "New bid placed!" });
+          })
+          .on("error", console.error)
+      : "";
+  }, []);
+
   const onChange = (value) => {
-    if (value < maxBid) {
-      notification.info({ message: "Please enter more than highest bid!" });
-      setCurrentBid(maxBid);
-    } else {
-      setCurrentBid(value);
-    }
+    setCurrentBid(value);
   };
 
   const onScroll = (e) => {
@@ -82,11 +94,7 @@ const BiddingHistory = ({ productId, initialPrice }) => {
           width: "90%",
         }}
       >
-        <PageHeader
-          ghost={false}
-          title={`Max bid ${maxBid}`}
-          subTitle='Bid History'
-        ></PageHeader>
+        <PageHeader ghost={false} title={`Max bid:  ${maxBid}`}></PageHeader>
 
         {loadBids ? (
           <div
@@ -101,16 +109,21 @@ const BiddingHistory = ({ productId, initialPrice }) => {
           </div>
         ) : (
           <div>
+
             <Space style={{ width: "100%" }}>
               <InputNumber
                 size="large"
-                min={maxBid}
                 placeholder={`Minimum amount: ${parseInt(maxBid) + 1}`}
                 onChange={onChange}
                 style={{ width: "100%" }}
                 required
               />
-              <Button loading={loading} onClick={submitBid} size="large">
+              <Button
+                loading={submitLoading}
+                disabled={parseInt(currentBid) < parseInt(maxBid) + 1}
+                onClick={submitBid}
+                size="large"
+              >
                 Submit Bid
               </Button>
             </Space>
@@ -126,10 +139,12 @@ const BiddingHistory = ({ productId, initialPrice }) => {
                   <List.Item key={item.id}>
                     <List.Item.Meta
                       // avatar={<Avatar src={item.picture.large} />}
-                      title={item.bidAmount}
-                      description={item.bidAmount}
+                      title={`Bid Amount- ${parseInt(item.bidAmount)
+                        .toFixed(2)
+                        .replace(/\d(?=(\d{3})+\.)/g, "$&,")}`}
+                      description={item.bidderAddress}
                     />
-                    <div>Content</div>
+                    <div>{item.user.firstName}</div>
                   </List.Item>
                 )}
               </VirtualList>

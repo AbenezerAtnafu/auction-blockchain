@@ -57,7 +57,6 @@ const Shops = () => {
     price,
     productCondition
   ) => {
-    console.log(name, category, startTime, endTime, price, productCondition);
     setLoading(true);
     const web3Instance = await web3();
     const account = await web3Instance.accounts;
@@ -82,6 +81,17 @@ const Shops = () => {
       shop.owner = await web3Instance.auction.methods
         .usersByAddress(shop.userAddress)
         .call();
+      shop.productCount = await web3Instance.auction.methods
+        .productCountByStore(shop.userAddress)
+        .call();
+      shop.products = [];
+      for (let i = 0; i <= shop.productCount; i++) {
+        console.log(shop.userAddress, "user address")
+        console.log(await web3Instance.auction.methods.stores(shop.userAddress, i).call())
+        shop.products.push(
+          await web3Instance.auction.methods.stores(shop.userAddress, i).call()
+        );
+      }
       setShopList((shopList) => [...shopList, shop]);
       if (shop.userAddress === account[0]) {
         setSelectedShop(shop);
@@ -103,8 +113,6 @@ const Shops = () => {
     loadShops();
   }, []);
 
-  
-
   if (loading && !selectedShop) {
     return (
       <div
@@ -121,7 +129,7 @@ const Shops = () => {
     );
   }
 
-  if(redirect){
+  if (redirect) {
     return <Redirect to={redirect} />;
   }
   return (
@@ -139,7 +147,7 @@ const Shops = () => {
               shape="round"
               size="large"
               onClick={() => {
-                if (cookies['hasAccount']==="false") {
+                if (cookies["hasAccount"] === "false") {
                   message.error("Please create your account!");
                   setRedirect("/register");
                 } else {
@@ -186,13 +194,17 @@ const Shops = () => {
               })
             ) : (
               <Col span={8} style={{ marginTop: "10px" }}>
-                <div>No Shops found!</div>
+                <div style={{textAlign:"center"}}>No Shops found!</div>
               </Col>
             )}
           </Row>
         </Col>
         <Col span={8}>
-          <StoreProductList web3={web3} shop={selectedShop} shopUserAddress={selectedUserAddress} />
+          <StoreProductList
+            web3={web3}
+            shop={selectedShop}
+            shopUserAddress={selectedUserAddress}
+          />
         </Col>
       </Row>
 
